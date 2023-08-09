@@ -62,3 +62,22 @@ body {
   padding: 0;
   line-height: inherit;
 }
+
+.btn {
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.btn-primary{
+  background-color: var(--qwik-dark-purple);
+  color: white ;
+}
+
+.btn:hover{
+  background-color: #9f6df0;
+}
+
+.btn:disabled{
+  background-color: rgb(160, 160, 160);
+}
