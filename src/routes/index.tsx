@@ -9,6 +9,7 @@ export default component$(() => {
   //useSignal() para valores primitivos como enteros, string, booleanos
   const idPokemon = useSignal(1);
   const showBackImage = useSignal(false);
+  const hideImage = useSignal(true);
   const pokemonLimit: number = 905;
 
   const changePokemon = $((value: number) =>{
@@ -23,12 +24,13 @@ export default component$(() => {
       <span class="text-2xl">Buscador simple</span>
       <span class="text-9xl">{idPokemon.value}</span>
 
-      <PokemonImage id={idPokemon.value} backImage={showBackImage.value} />
+      <PokemonImage id={idPokemon.value} backImage={showBackImage.value} hideImage={hideImage.value}/>
 
       <div class="mt-2">
         <button onClick$={ () => changePokemon(-1) } class="btn btn-primary">Anterior</button>
         <button onClick$={ () => changePokemon(+1) } class="btn btn-primary ml-4">Siguiente</button>
         <button onClick$={ () => showBackImage.value = !showBackImage.value } class="btn btn-primary ml-4">Voltear</button>
+        <button onClick$={ () => hideImage.value = !hideImage.value } class="btn btn-primary ml-4">Revelar</button>
       </div>
     </>
   );
