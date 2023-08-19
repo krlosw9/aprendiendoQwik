@@ -11,11 +11,10 @@ export default component$(() => {
   const idPokemon = useSignal(1);
   const showBackImage = useSignal(false);
   const hideImage = useSignal(true);
-  const pokemonLimit: number = 905;
 
   const changePokemon = $((value: number) =>{
     if((idPokemon.value + value) <= 0) return;
-    if((idPokemon.value + value) > pokemonLimit) return;
+    if((idPokemon.value + value) > import.meta.env.PUBLIC_POKEMON_LIMIT) return;
 
     idPokemon.value += value;
   });
