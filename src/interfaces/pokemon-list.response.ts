@@ -10,3 +10,13 @@ export interface BasicPokemonInfo {
   name: string;
   url:  string;
 }
+
+export interface SmallPokemon {
+  name: string;
+  id  : string;
+}
+
+export interface PokemonPageState{
+  currentPage: number;
+  pokemons  : SmallPokemon[];
+}
