@@ -1,4 +1,4 @@
-import { component$, useStore, useTask$ } from "@builder.io/qwik";
+import { $, component$, useOnDocument, useStore, useTask$ } from "@builder.io/qwik";
 import {  type DocumentHead } from "@builder.io/qwik-city";
 
 import { getAllPokemon } from "~/helpers/getSmallPokemon";
@@ -7,8 +7,9 @@ import { PokemonImage } from "~/components/pokemons/pokemon-image";
 
 export default component$(() => {
   const pokemonState = useStore<PokemonPageState>({
-    currentPage: 0,
-    pokemons: []
+    currentPage : 0,
+    isLoading   : false,
+    pokemons    : []
   });
 
   // useVisibleTask$(async({track}) => {
@@ -21,28 +22,29 @@ export default component$(() => {
   useTask$( async({track}) =>{
     track(() => pokemonState.currentPage)
 
-    const pokemons = await getAllPokemon(pokemonState.currentPage *10);
+    const pokemons = await getAllPokemon(pokemonState.currentPage *10, 30);
     pokemonState.pokemons = [...pokemonState.pokemons, ...pokemons];
+    pokemonState.isLoading = false;
   })
+
+  useOnDocument('scroll', $(() => {
+    const maxScroll = document.body.scrollHeight;
+    const currenScroll = window.scrollY + window.innerHeight;
+
+    if((currenScroll + 200) >= maxScroll && !pokemonState.isLoading){
+      pokemonState.isLoading = true;
+      pokemonState.currentPage ++;
+    }
+  }))
 
   return(
     <>
       <div class="flex flex-col">
         <span class="my-5 text-5xl">Status</span>
         <span>Pagina actual: {pokemonState.currentPage}</span>
-        <span class='h-4'>Esta cargando: </span>
       </div>
 
-      <div class="mt-10">
-        {/* <button class="btn btn-primary mr-2" onClick$={() =>{ pokemonState.currentPage-- }}>
-          Anterior
-        </button> */}
-        <button class="btn btn-primary" onClick$={() => {pokemonState.currentPage++}}>
-          Siguiente
-        </button>
-      </div>
-
-      <div class="grid grid-cols-5 mt-5">
+      <div class="grid sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-6 mt-5">
       {
           pokemonState.pokemons.map(({name, id}) =>(
             <div key={name} class="m-5 flex flex-col justify-center items-center">

@@ -17,6 +17,7 @@ export interface SmallPokemon {
 }
 
 export interface PokemonPageState{
-  currentPage: number;
-  pokemons  : SmallPokemon[];
+  currentPage : number;
+  isLoading   : boolean;
+  pokemons    : SmallPokemon[];
 }
