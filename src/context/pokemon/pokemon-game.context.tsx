@@ -2,7 +2,7 @@ import { createContextId } from "@builder.io/qwik";
 
 
 export interface PokemonGameState{
-  pokemonId       : number;
+  idPokemon       : number;
   showBackImage   : boolean;
   hideImage       : boolean;
 }
