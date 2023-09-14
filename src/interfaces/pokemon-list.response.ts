@@ -16,8 +16,8 @@ export interface SmallPokemon {
   id  : string;
 }
 
-export interface PokemonPageState{
-  currentPage : number;
-  isLoading   : boolean;
-  pokemons    : SmallPokemon[];
-}
+// export interface PokemonPageState{
+//   currentPage : number;
+//   isLoading   : boolean;
+//   pokemons    : SmallPokemon[];
+// }
