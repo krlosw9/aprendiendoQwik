@@ -1,7 +1,8 @@
-import { component$, useContext } from "@builder.io/qwik";
+import { component$ } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import { PokemonImage } from "~/components/pokemons/pokemon-image";
-import { PokemonGameContext } from "~/context";
+//import { PokemonGameContext } from "~/context";
+import { usePokemonGame } from "~/hooks/use-pokemon-game";
 
 //Esto se ejecuta del lado del servidor
 export const usePokemonId = routeLoader$<number>(({params, redirect, env}) => {
@@ -18,15 +19,20 @@ export const usePokemonId = routeLoader$<number>(({params, redirect, env}) => {
 
 //Esto se ejecuta del lado del cliente
 export default component$(() => {
+  const { pokemonHideImage, pokemonShowBackImage, toggleFromBack, toggleVisible} = usePokemonGame();
   //const loc = useLocation();
-  const pokemonId = usePokemonId();
-  const pokemonGame = useContext(PokemonGameContext);
+  const pokemonIdRouteLoader = usePokemonId();
+  //const pokemonGame = useContext(PokemonGameContext);
 
   return(
     <>
       {/* <span class="text-5xl">Pokemon: {loc.params.id}</span> */}
-      <span class="text-5xl">Pokemon: {pokemonId.value}</span>
-      <PokemonImage id= {pokemonId.value} backImage={pokemonGame.showBackImage} hideImage={pokemonGame.hideImage}/>
+      <span class="text-5xl">Pokemon: {pokemonIdRouteLoader.value}</span>
+      <PokemonImage id= {pokemonIdRouteLoader.value} backImage={pokemonShowBackImage.value} hideImage={pokemonHideImage.value}/>
+      <div>
+        <button onClick$={ toggleFromBack } class="btn btn-primary ml-4">Voltear</button>
+        <button onClick$={ toggleVisible } class="btn btn-primary ml-4">Revelar</button>
+      </div>
     </>
   )
 })
