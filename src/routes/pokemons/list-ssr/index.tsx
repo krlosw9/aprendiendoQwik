@@ -1,4 +1,4 @@
-import { component$, useComputed$ } from "@builder.io/qwik";
+import { $, component$, useComputed$, useSignal } from "@builder.io/qwik";
 import { Link, type DocumentHead, routeLoader$, useLocation } from "@builder.io/qwik-city";
 import { PokemonImage } from "~/components/pokemons/pokemon-image";
 import { Modal } from "~/components/shared";
@@ -20,6 +20,7 @@ export const usePokemonList = routeLoader$<SmallPokemon[]>(async ({query, redire
 export default component$(() => {
   const pokemons = usePokemonList();
   const location = useLocation();
+  const modalVisible = useSignal(false);
 
   const currentOffset = useComputed$(() =>{
     const offsetString = new URLSearchParams(location.url.search);
@@ -31,6 +32,16 @@ export default component$(() => {
 
     return `/pokemons/list-ssr/?offset=${currentOffset.value+action}`
   }
+
+  const showModal = $((id: string, name: string) =>{
+    console.log(id, name);
+    
+    modalVisible.value = true;
+  })
+
+  const closeModal = $(() =>{
+    modalVisible.value = false;
+  })
 
   return (
     <>
@@ -54,7 +65,10 @@ export default component$(() => {
       <div class="grid grid-cols-5 mt-5">
         {
           pokemons.value.map(({name, id}) =>(
-            <div key={name} class="m-5 flex flex-col justify-center items-center">
+            <div 
+            key={name} 
+            onClick$={() => showModal(id, name)}
+            class="m-5 flex flex-col justify-center items-center">
               <PokemonImage id={id}/>
               <span class="capitalize">{name}</span>
             </div>
@@ -63,9 +77,16 @@ export default component$(() => {
         }
       </div>
 
-      <Modal>
-        <span>Hola mundo</span>
-        <PokemonImage id="1" />
+      <Modal showModal={modalVisible.value} closeFn={closeModal}>
+        
+        <div q:slot="title">
+          Nombre del pokemon
+        </div>
+        <div q:slot="content" class="flex flex-col justify-center items-center">
+          <PokemonImage id="1" />
+          <span>Preguntandole a ChatGPT</span>
+        </div>
+
       </Modal>
     </>
   )
