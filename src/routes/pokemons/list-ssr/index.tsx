@@ -1,6 +1,7 @@
 import { component$, useComputed$ } from "@builder.io/qwik";
 import { Link, type DocumentHead, routeLoader$, useLocation } from "@builder.io/qwik-city";
 import { PokemonImage } from "~/components/pokemons/pokemon-image";
+import { Modal } from "~/components/shared";
 import { getAllPokemon } from "~/helpers/getSmallPokemon";
 import type { SmallPokemon } from "~/interfaces";
 
@@ -61,6 +62,11 @@ export default component$(() => {
           
         }
       </div>
+
+      <Modal>
+        <span>Hola mundo</span>
+        <PokemonImage id="1" />
+      </Modal>
     </>
   )
 })
