@@ -1,4 +1,4 @@
-import { $, component$, useComputed$, useSignal } from "@builder.io/qwik";
+import { $, component$, useComputed$, useSignal, useStore } from "@builder.io/qwik";
 import { Link, type DocumentHead, routeLoader$, useLocation } from "@builder.io/qwik-city";
 import { PokemonImage } from "~/components/pokemons/pokemon-image";
 import { Modal } from "~/components/shared";
@@ -21,6 +21,10 @@ export default component$(() => {
   const pokemons = usePokemonList();
   const location = useLocation();
   const modalVisible = useSignal(false);
+  const modalPokemon = useStore({
+    id: '',
+    name: ''
+  });
 
   const currentOffset = useComputed$(() =>{
     const offsetString = new URLSearchParams(location.url.search);
@@ -34,7 +38,8 @@ export default component$(() => {
   }
 
   const showModal = $((id: string, name: string) =>{
-    console.log(id, name);
+    modalPokemon.id = id;
+    modalPokemon.name = name;
     
     modalVisible.value = true;
   })
@@ -77,13 +82,13 @@ export default component$(() => {
         }
       </div>
 
-      <Modal showModal={modalVisible.value} closeFn={closeModal}>
+      <Modal showModal={modalVisible.value} closeFn={closeModal} persistent size="md">
         
         <div q:slot="title">
-          Nombre del pokemon
+          {modalPokemon.name}
         </div>
         <div q:slot="content" class="flex flex-col justify-center items-center">
-          <PokemonImage id="1" />
+          <PokemonImage id={modalPokemon.id} />
           <span>Preguntandole a ChatGPT</span>
         </div>
 
