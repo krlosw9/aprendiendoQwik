@@ -1,7 +1,8 @@
-import { $, component$, useComputed$, useSignal, useStore } from "@builder.io/qwik";
+import { $, component$, useComputed$, useSignal, useStore, useVisibleTask$ } from "@builder.io/qwik";
 import { Link, type DocumentHead, routeLoader$, useLocation } from "@builder.io/qwik-city";
 import { PokemonImage } from "~/components/pokemons/pokemon-image";
 import { Modal } from "~/components/shared";
+import { getDetailsByPokemonId } from "~/helpers/getDetailsByPokemonId";
 import { getAllPokemon } from "~/helpers/getSmallPokemon";
 import type { SmallPokemon } from "~/interfaces";
 
@@ -46,6 +47,16 @@ export default component$(() => {
 
   const closeModal = $(() =>{
     modalVisible.value = false;
+  })
+
+  useVisibleTask$(({track}) =>{
+    track(() => modalPokemon.name);
+
+    if(modalPokemon.name.length > 0){
+      getDetailsByPokemonId(modalPokemon.id).then(
+        (resp) => (console.log(resp))
+      )
+    }
   })
 
   return (
