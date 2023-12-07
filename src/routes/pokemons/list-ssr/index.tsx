@@ -26,6 +26,8 @@ export default component$(() => {
     id: '',
     name: ''
   });
+  const detailsInitialState = 'Buscando información, Por favor espere...';
+  const apiDetailsResponse = useSignal(detailsInitialState);
 
   const currentOffset = useComputed$(() =>{
     const offsetString = new URLSearchParams(location.url.search);
@@ -52,9 +54,11 @@ export default component$(() => {
   useVisibleTask$(({track}) =>{
     track(() => modalPokemon.name);
 
+    apiDetailsResponse.value = detailsInitialState;
+
     if(modalPokemon.name.length > 0){
       getDetailsByPokemonId(modalPokemon.id).then(
-        (resp) => (console.log(resp))
+        resp => apiDetailsResponse.value = resp.slice(0,250)+'...'
       )
     }
   })
@@ -100,7 +104,7 @@ export default component$(() => {
         </div>
         <div q:slot="content" class="flex flex-col justify-center items-center">
           <PokemonImage id={modalPokemon.id} />
-          <span>Preguntandole a ChatGPT</span>
+          <span>{apiDetailsResponse}</span>
         </div>
 
       </Modal>
