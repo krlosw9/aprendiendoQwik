@@ -1,71 +1,52 @@
-import { $, component$, useComputed$, useStore, useStylesScoped$ } from '@builder.io/qwik';
+import { component$, useStylesScoped$ } from '@builder.io/qwik';
 
 import styles from './login.css?inline';
+import { Form, routeAction$ } from '@builder.io/qwik-city';
+
+export const useLoginUserAction = routeAction$((data, event) => {
+  const {email, password} = data;
+
+  if(email === 'krlosw9@gmail.com' && password === '123456789') {
+    return {
+      success: true,
+      jwt: 'este_es_un_jwt_super_seguro'
+    }
+  }
+
+  return {
+    success: false
+  }
+});
 
 export default component$(() => {
 
   useStylesScoped$(styles);
 
-  const formState = useStore({
-    email: '',
-    password: '',
-    formPosted: false
-  });
-
-  const emailError = useComputed$(() => {
-    if(formState.email.includes('@')) return ''
-
-    return 'not-valid';
-  })
-
-  const passwordError = useComputed$(() => {
-    if(formState.password.length >= 6) return ''
-
-    return 'not-valid';
-  });
-
-  const isFormValid = useComputed$(() => {
-    if(emailError.value === 'not-valid' ||
-      passwordError.value === 'not-valid') return false;
-
-      return true;
-  })
-
-  const onSubmit = $(() => {
-    console.log("isFormValid: ", isFormValid.value);
-    
-    if(isFormValid.value){
-      formState.formPosted = true;
-      const { email, password } = formState;
-      console.log(`email: ${email} password: ${password}`);
-    }
-    
-  })
+  const action = useLoginUserAction();
 
   return (
-    <form onSubmit$={onSubmit} class="login-form" preventdefault:submit>
+    <Form action={action} class="login-form mt-10" >
       <div class="relative">
-        <input 
-          onInput$={(ev) => formState.email = (ev.target as HTMLInputElement).value }
-          class={formState.formPosted ? emailError.value : ''}
-          name="email" type="text" placeholder="Email address" />
+        <input name="email" type="text" placeholder="Email address" />
         <label for="email">Email Address</label>
       </div>
       <div class="relative">
-        <input 
-          onInput$={(ev) => formState.password = (ev.target as HTMLInputElement).value }
-          class={formState.formPosted ? passwordError.value : ''}
-          id="password" name="password" type="password" placeholder="Password" />
+        <input name="password" type="password" placeholder="Password" />
         <label for="password">Password</label>
       </div>
       <div class="relative">
-        <button disabled={!isFormValid.value} type='submit'>Ingresar</button>
+        <button type='submit'>Ingresar</button>
       </div>
 
+      <p>
+        { action.value?.success && (
+          <code>Autenticado: Token {action.value.jwt}</code>
+        ) }
+      </p>
 
       <code>
-        { JSON.stringify( formState, undefined , 2 ) }
+        { JSON.stringify( action.value, undefined , 2 ) }
       </code>
-    </form>
+    </Form>
   )
 });
