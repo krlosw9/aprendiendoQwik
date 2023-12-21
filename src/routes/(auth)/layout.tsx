@@ -20,6 +20,10 @@ export default component$(() => {
                         <div class="login-content">
                             <Slot />
                         </div>
+                        <div class="w-4/5 my-0 mx-auto text-sm">
+                            <h3 class="text-gray-700">Email: usuario@prueba.com</h3>
+                            <h3 class="text-gray-700 mt-1.5">Password: 123456</h3>
+                        </div>
                     </div>
                 </div>
             </div>

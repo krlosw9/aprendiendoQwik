@@ -5,10 +5,10 @@ export default component$(() => {
   return (
     <>
       <h3>
-        Admin Dashboard
+        Admin dashboard
       </h3>
       <span>
-      Esta ruta debe ser protegida...
+        Este solo es un ejemplo de inicio de sesión, esta ruta y sus derivadas son privadas...
       </span>
     </>
   )

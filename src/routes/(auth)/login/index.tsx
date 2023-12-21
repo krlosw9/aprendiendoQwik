@@ -6,9 +6,9 @@ import styles from './login.css?inline';
 export const useLoginUserAction = routeAction$((data, {cookie, redirect}) => {
   const {email, password} = data;
 
-if(email === 'k@w.com' && password === '123456') {
+if(email === 'usuario@prueba.com' && password === '123456') {
     cookie.set('jwt', 'jwt_super_seguro', {secure: true, path: '/'});
-    redirect(302, '/');
+    redirect(302, '/dashboard');
   }
 
   return {
@@ -30,24 +30,23 @@ export default component$(() => {
       <div class="relative">
         <input name="email" type="text" placeholder="Email address" />
         <label for="email">Email Address</label>
+        { 
+          action.value?.fieldErrors?.email && 
+            <p class="text-sm text-red-400 mb-6"> {action.value.fieldErrors.email} </p>
+        }
       </div>
       <div class="relative">
         <input name="password" type="password" placeholder="Password" />
         <label for="password">Password</label>
+        { 
+          action.value?.fieldErrors?.password && 
+            <p class="text-sm text-red-400 mb-6"> {action.value.fieldErrors.password} </p>
+        }
       </div>
       <div class="relative">
         <button type='submit'>Ingresar</button>
       </div>
-
-      {/* <p>
-        { action.value?.success && (
-          <code>Autenticado: Token {action.value.jwt}</code>
-        ) }
-      </p> */}
-
-      <code>
-        { JSON.stringify( action.value, undefined , 2 ) }
-      </code>
+    
     </Form>
   )
 });
