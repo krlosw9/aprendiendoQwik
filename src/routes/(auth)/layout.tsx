@@ -10,9 +10,9 @@ export default component$(() => {
         <div class="login-main">
             <div class="login-bg">
                 <div
-                    class="login-bg-gradient">
+                    class="login-bg-gradient" style={{width: "80%", margin: "0 auto", borderRadius: "1.5rem"}}>
                 </div>
-                <div class="login-white-bg">
+                <div class="login-white-bg" style={{width: "90%", margin: "0 auto", borderRadius: "1.5rem"}}>
                     <div class="max-w-md mx-auto">
                         <div>
                             <h1 class="login-title">Login Form</h1>
@@ -20,9 +20,9 @@ export default component$(() => {
                         <div class="login-content">
                             <Slot />
                         </div>
-                        <div class="w-4/5 my-0 mx-auto text-sm">
-                            <h3 class="text-gray-700">Email: usuario@prueba.com</h3>
-                            <h3 class="text-gray-700 mt-1.5">Password: 123456</h3>
+                        <div class="w-4/5 md:w-full my-0 mx-auto">
+                            <h3 class="text-sm text-gray-700">Email: usuario@prueba.com</h3>
+                            <h3 class="text-sm text-gray-700 mt-1.5">Password: 123456</h3>
                         </div>
                     </div>
                 </div>
